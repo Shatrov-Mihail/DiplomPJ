@@ -38,16 +38,16 @@ async function login(login, password) {
     return { token, user };
 }
 
-function getUsers() {
+async function getUsers() {
     return User.find();
 }
 
 function getRoles() {
     return [
-        { id: ROLES.ADMIN, name: 'Admin' },
-        { id: ROLES.MODERATOR, name: 'Moderator' },
-        { id: ROLES.USER, name: 'User' },
-    ]
+        { id: ROLES.ADMIN, name: 'Администратор' },
+        { id: ROLES.MODERATOR, name: 'Модератор' },
+        { id: ROLES.USER, name: 'Пользователь' }
+    ];
 }
 
 // delete

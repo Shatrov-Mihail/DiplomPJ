@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { CategoryList, Pagination, PostCard, Search } from "./components";
+import { CategoryList, Pagination, ProductCard, Search } from "./components";
 import { PAGINATION_LIMIT } from "../../constants";
 import { debounce } from "./utils";
 import styled from "styled-components";
 import { request } from "../../utils/request";
 
 const MainContainer = ({ className }) => {
-  const [posts, setPosts] = useState([]);
+  const [productsList, setProductsList] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -16,26 +16,26 @@ const MainContainer = ({ className }) => {
   const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchProductsList = async () => {
       try {
-        const url = `/posts?search=${searchPhrase}&page=${page}&limit=${PAGINATION_LIMIT}&sortOrder=${sortOrder}`;
+        const url = `/productsList?search=${searchPhrase}&page=${page}&limit=${PAGINATION_LIMIT}&sortOrder=${sortOrder}`;
         const response = await request(url);
         const {
-          data: { posts, lastPage },
+          data: { productsList, lastPage },
         } = response;
 
-        const filteredPosts = categoryFilter
-          ? posts.filter((post) => post.category === categoryFilter)
-          : posts;
+        const filteredProductsList = categoryFilter
+          ? productsList.filter((product) => product.category === categoryFilter)
+          : productsList;
 
-        setPosts(filteredPosts);
+        setProductsList(filteredProductsList);
         setLastPage(lastPage);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching productsList:", error);
       }
     };
 
-    fetchPosts();
+    fetchProductsList();
   }, [page, searchPhrase, categoryFilter, sortOrder]);
 
   const toggleSortOrder = () => {
@@ -69,7 +69,7 @@ const MainContainer = ({ className }) => {
           categoryFilter={categoryFilter}
           onCategorySearch={onCategorySearch}
         />
-        <div className="posts-and-search">
+        <div className="productsList-and-search">
           <Search
             searchPhrase={searchPhrase}
             onChange={onSearch}
@@ -77,11 +77,11 @@ const MainContainer = ({ className }) => {
           />
         </div>
       </div>
-      <div className="post-list-container">
-        {posts.length > 0 ? (
-          <div className="post-list">
-            {posts.map(({ id, title, imageUrl, additionalImages, price }) => (
-              <PostCard
+      <div className="product-list-container">
+        {productsList.length > 0 ? (
+          <div className="product-list">
+            {productsList.map(({ id, title, imageUrl, additionalImages, price }) => (
+              <ProductCard
                 key={id}
                 id={id}
                 title={title}
@@ -92,11 +92,11 @@ const MainContainer = ({ className }) => {
             ))}
           </div>
         ) : (
-          <div className="no-posts-found">Товар не найден</div>
+          <div className="no-productsList-found">Товар не найден</div>
         )}
       </div>
       <div>
-        {lastPage > 1 && posts.length > 0 && (
+        {lastPage > 1 && productsList.length > 0 && (
           <Pagination page={page} lastPage={lastPage} setPage={setPage} />
         )}
       </div>
@@ -132,14 +132,14 @@ export const Main = styled(MainContainer)`
   }
 
 
-  & .post-list {
+  & .product-list {
     display: flex;
     flex-wrap: wrap;
     gap: 48px;
     margin: 0 20px auto;
   }
 
-  & .no-posts-found {
+  & .no-productsList-found {
     margin: 0 auto;
     font-size: 30px;
     font-weight: bold;

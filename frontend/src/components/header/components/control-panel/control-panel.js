@@ -60,7 +60,7 @@ const ControlPanelContainer = ({ className }) => {
         />
         {isAdmin && (
           <>
-            <Link to="/post">
+            <Link to="/product">
               <Icon id="fa-newspaper-o " margin="10px 0 0 16px" title="Добавить статью" alt="Статья" size="28px"/>
             </Link>
             <Link to="/users">

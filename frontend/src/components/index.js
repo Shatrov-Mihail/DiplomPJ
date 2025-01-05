@@ -6,5 +6,6 @@ export * from './button/button';
 export * from './h2/h2';
 export * from './auth-form-error/auth-form-error';
 export * from './private-content/private-content';
-export * from './modal/modal';
 export * from './error/error';
+export * from './loader/loader';
+

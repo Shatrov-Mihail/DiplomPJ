@@ -1,11 +1,11 @@
 import { useLayoutEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { Error, Header, Footer, Modal } from "./components";
+import { useDispatch, useSelector } from "react-redux";
+import { Error, Header, Footer, Loader } from "./components";
 import {
   Authorization,
   Main,
-  Post,
+  Product,
   Registration,
   Users,
   ShoppingCart,
@@ -29,6 +29,7 @@ const AppColumn = styled.div`
 
 export const Blog = () => {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.loading.isLoading);
 
   useLayoutEffect(() => {
     const currentUserDataJSON = sessionStorage.getItem("userData");
@@ -49,6 +50,7 @@ export const Blog = () => {
 
   return (
     <AppColumn>
+		{isLoading && <Loader />}
       <Header />
       <main>
         <Routes>
@@ -57,14 +59,13 @@ export const Blog = () => {
           <Route path="/register" element={<Registration />} />
           <Route path="/users" element={<Users />} />
           <Route path="/shoppingCart" element={<ShoppingCart />} />
-          <Route path="/post" element={<Post />} />
-          <Route path="/post/:id" element={<Post />} />
-          <Route path="/post/:id/edit" element={<Post />} />
+          <Route path="/product" element={<Product />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/product/:id/edit" element={<Product />} />
           <Route path="*" element={<Error error={ERROR.PAGE_NOT_EXIST} />} />
         </Routes>
       </main>
       <Footer />
-      <Modal />
     </AppColumn>
   );
 };

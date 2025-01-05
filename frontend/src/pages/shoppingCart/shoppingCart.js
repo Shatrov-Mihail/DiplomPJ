@@ -9,7 +9,7 @@ const ShoppingCartContainer = ({ className }) => {
 
   const calculateTotal = () => {
     return shoppingCart.reduce(
-      (total, item) => total + item.postId.price * item.quantity,
+      (total, item) => total + item.productId.price * item.quantity,
       0
     );
   };
@@ -40,7 +40,7 @@ const ShoppingCartContainer = ({ className }) => {
     );
   };
 
-  const onPostRemove = async (id) => {
+  const onProductRemove = async (id) => {
     try {
       await request(`/shoppingCart/${id}`, "DELETE");
       setShoppingCart((prevCart) => prevCart.filter((item) => item._id !== id));
@@ -70,24 +70,24 @@ const ShoppingCartContainer = ({ className }) => {
           <div>Стоимость</div>
           <div>Удалить</div>
         </div>
-        {shoppingCart.map(({ _id, postId, quantity }) => (
+        {shoppingCart.map(({ _id, productId, quantity }) => (
           <div className="cart-row" key={_id}>
             <div>
               <img
-                src={postId.image}
-                alt={postId.title}
+                src={productId.image}
+                alt={productId.title}
                 style={{ width: "150px", height: "75px" }}
               />
             </div>
-            <div>{postId.title}</div>
+            <div>{productId.title}</div>
             <div>
               <button onClick={() => updateQuantity(_id, -1)}>-</button>
               {quantity}
               <button onClick={() => updateQuantity(_id, 1)}>+</button>
             </div>
-            <div>{postId.price * quantity} ₽</div>
+            <div>{productId.price * quantity} ₽</div>
             <div>
-              <button onClick={() => onPostRemove(_id)}>✖</button>
+              <button onClick={() => onProductRemove(_id)}>✖</button>
             </div>
           </div>
         ))}
